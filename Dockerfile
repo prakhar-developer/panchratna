@@ -30,6 +30,8 @@ COPY . /var/www
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage
 
-# Expose port 9000 and start php-fpm server
-EXPOSE 9000
-CMD ["php-fpm"]
+# Expose port for Laravel HTTP server
+EXPOSE 10000
+
+# Run Laravel built-in server
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=10000"]
