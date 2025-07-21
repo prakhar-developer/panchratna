@@ -26,12 +26,15 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copy existing application
 COPY . /var/www
 
+# Install PHP dependencies
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+
 # Set permissions
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage
 
-# Expose port for Laravel HTTP server
+# Expose port
 EXPOSE 10000
 
-# Run Laravel built-in server
+# Start Laravel built-in server
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=10000"]
